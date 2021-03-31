@@ -40,15 +40,15 @@ def get_url_audio(message):
         if True:
             videoclip = VideoFileClip(file_name[0]+ '.'+ file_name[1])
             audioclip = videoclip.audio
-            audio_file = file_name[0]+'.'+'mp3'
+            audio_file = file_name[0] + '.mp3'
             audioclip.write_audiofile(audio_file)
             audioclip.close()
             videoclip.close()
             audio = open(audio_file, 'rb')
             bot.send_audio(message.chat.id, audio)
             audio.close()
-            for f in files:
-                os.unlink(f)
+            os.unlink(file_name[0] + '.' + file_name[1])
+            os.unlink(audio_file)
     else:
         bot.send_message(message.chat.id, "Give me a valid link")
 
@@ -61,8 +61,7 @@ def get_url_video(message):
             video = open(file_name[0] + '.' + file_name[1], 'rb')
             bot.send_video(message.chat.id, video)
             video.close()
-            for f in files:
-                os.unlink(f)
+            os.unlink(file_name[0] + '.' + file_name[1])
     else:
         bot.send_message(message.chat.id, "Give me a valid link")
 
@@ -73,10 +72,6 @@ def download_file(url, ydl_opts):
         video_ext = file_info.get('ext', None)
     return video_id, video_ext
 
-
-for f in files:
-    os.unlink(f)
-    print(f)
 
 # pip install -r requirements.txt
 # pip freeze > requirements.txt
